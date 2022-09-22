@@ -102,5 +102,8 @@
       }
     }
   },
-  "defaultProject": "udemy-project-frontend"
+  "defaultProject": "udemy-project-frontend",
+  "cli": {
+    "analytics": false
+  }
 }
