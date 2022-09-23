@@ -30,12 +30,21 @@ export class ClientesComponent implements OnInit {
       if(!page){
         page = 0;
       }
-      this.clienteService.getClientes(page).subscribe(
+      this.clienteService.getClientes(page)
+      .subscribe(
         (response: any) => {
           this.clientes = response.content as Cliente[];
           this.paginador = response;
         }
       );
+      this.modalService.notificarUpload.subscribe(cliente => {
+        this.clientes = this.clientes.map(clienteOriginal =>{
+          if(cliente.id == clienteOriginal.id){
+            clienteOriginal.foto = cliente.foto;
+          }
+          return clienteOriginal;
+        });
+      });
     });
   }
 
