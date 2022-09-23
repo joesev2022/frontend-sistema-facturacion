@@ -23,8 +23,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let cliente of clientes">
-                <td><button type="button" (click)="abrirModal(cliente)" class="btn btn-success btn-sm">{{ cliente.id }}</button></td>
-                <!--<td><button type="button" [routerLink]="['/clientes/ver', cliente.id]" class="btn btn-success btn-sm">{{ cliente.id }}</button></td>-->
+              <td>
+                <img *ngIf="cliente?.foto" (click)="abrirModal(cliente)" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
+                <img *ngIf="!cliente?.foto" (click)="abrirModal(cliente)" src="http://localhost:8080/images/user-icon.png" alt="Sin foto" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
+              </td>
+              <!--<button type="button" (click)="abrirModal(cliente)" class="btn btn-success btn-sm">{{ cliente.id }}</button>-->
+              <!--<td><button type="button" [routerLink]="['/clientes/ver', cliente.id]" class="btn btn-success btn-sm">{{ cliente.id }}</button></td>-->
                 <td>{{ cliente.nombre }}</td>
                 <td>{{ cliente.apellido }}</td>
                 <td>{{ cliente.email }}</td>
