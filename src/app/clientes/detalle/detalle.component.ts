@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 import { Cliente } from '../cliente';
 import { ClienteService } from '../cliente.service';
+import { ModalService } from './modal.service';
 
 @Component({
   selector: 'detalle-cliente',
@@ -16,8 +17,8 @@ export class DetalleComponent implements OnInit {
   fotoSeleccionada: File;
   progreso:number = 0;
 
-  constructor(private clienteService: ClienteService, 
-    private activatedRoute: ActivatedRoute) { }
+  constructor(private clienteService: ClienteService, public modalService: ModalService,
+    /*private activatedRoute: ActivatedRoute*/) { }
 
   ngOnInit(): void {
     /*this.activatedRoute.paramMap.subscribe(params => {
@@ -56,6 +57,12 @@ export class DetalleComponent implements OnInit {
         }
       });
     }
+  }
+
+  cerrarModal(){
+    this.modalService.cerrarModal();
+    this.fotoSeleccionada = null;
+    this.progreso = 0;
   }
 
 }
