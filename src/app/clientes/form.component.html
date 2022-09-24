@@ -9,6 +9,7 @@
     <div class="card-body">
 
         <form #clienteForm="ngForm">
+
             <div class="form-group row">
                 <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
                 <div class="col-sm-6">
@@ -23,6 +24,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
                 <div class="col-sm-6">
@@ -34,6 +36,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label for="email" class="col-form-label col-sm-2">Email</label>
                 <div class="col-sm-6">
@@ -48,12 +51,23 @@
                     </div>
                 </div>
             </div>
+
             <div class="form-group row">
                 <label for="createAt" class="col-form-label col-sm-2">Fecha</label>
                 <div class="col-sm-6">
                     <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt"> <!-- required="" -->
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="region" class="col-form-label col-sm-2">Region</label>
+                <div class="col-sm-6">
+                    <select class="form-control" [(ngModel)]="cliente.region" name="region" style="width: 500px;">
+                        <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
+                    </select> <!-- required="" -->
+                </div>
+            </div>
+
             <div class="form-group row">
                 <div class="col-sm-6">
                     <button class="btn btn-primary" role="button" (click)="create()" *ngIf="!cliente.id else elseBlock" [disabled]="!clienteForm.form.valid">Crear</button>
@@ -62,6 +76,7 @@
                     </ng-template>
                 </div>
             </div>
+
         </form>
 
     </div>
