@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
+import { AuthService } from '../usuarios/auth.service';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import { ModalService } from './detalle/modal.service';
@@ -19,6 +20,7 @@ export class ClientesComponent implements OnInit {
   constructor(
     private clienteService: ClienteService,
     private modalService: ModalService,
+    public authService: AuthService,
     private activatedRouter: ActivatedRoute
     ) { }
 
