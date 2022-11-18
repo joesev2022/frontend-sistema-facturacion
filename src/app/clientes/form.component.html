@@ -62,7 +62,8 @@
             <div class="form-group row">
                 <label for="region" class="col-form-label col-sm-2">Region</label>
                 <div class="col-sm-6">
-                    <select class="form-control" [(ngModel)]="cliente.region" name="region" style="width: 500px;">
+                    <select [compareWith]="compararRegion" class="form-control" [(ngModel)]="cliente.region" name="region" style="width: 500px;">
+                        <option [ngValue]="undefined">--- Seleccionar Región ---</option>
                         <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
                     </select> <!-- required="" -->
                 </div>

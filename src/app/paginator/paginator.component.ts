@@ -12,7 +12,9 @@ export class PaginatorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.paginas = new Array(this.paginador.totalPages).fill(0).map((_valor, indice) => indice + 1)
+    this.paginas = new Array(this.paginador.totalPages)
+                  .fill(0)
+                  .map((_valor, indice) => indice + 1)
   }
 
 }
