@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 //import { CLIENTES } from './clientes.json';
 import { of, Observable, catchError, throwError, map } from 'rxjs';
 import { Cliente } from './cliente';
-import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { Region } from './region';
-import { AuthService } from '../usuarios/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +14,9 @@ export class ClienteService {
 
   private urlEndPoint:string = 'http://localhost:8080/api/clientes';
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
- /*private agregarAuthorizationHeader(){
+/*private agregarAuthorizationHeader(){
     let token = this.authService.token;
     if(token != null) {
       return this.httpHeaders.append('Authorization', 'Bearer ' + token);
@@ -25,7 +24,7 @@ export class ClienteService {
     return this.httpHeaders;
   }*/
 
-  private isNoAutorizado(e): boolean{
+/*private isNoAutorizado(e): boolean{
     if(e.status == 401){
       if (this.authService.isAuthenticated()) {
         this.authService.logout();
@@ -41,15 +40,10 @@ export class ClienteService {
     }
 
     return false;
-  }
+  }*/
 
   getRegiones(): Observable<Region[]>{
-    return this.http.get<Region[]>(this.urlEndPoint + '/regiones').pipe(
-      catchError(e => {
-        this.isNoAutorizado(e);
-        return throwError(e);
-      })
-    );
+    return this.http.get<Region[]>(this.urlEndPoint + '/regiones')
   }
   
   getClientes(page: number): Observable<any[]>{ 
@@ -65,17 +59,12 @@ export class ClienteService {
       //Estoy parseando el response tipo json a tipo cliente.
       map((response: any) => response.cliente as Cliente),
       catchError(e => {
-
-        if (this.isNoAutorizado(e)) {
-          return throwError(e);
-        }
-
         if(e.status==400){
           return throwError(e);
         }
-
-        console.error(e.error.mensaje)
-        swal(e.error.mensaje, e.error.error, 'error');
+        if (e.error.mensaje) {
+          console.error(e.error.mensaje)
+        }        
         return throwError(e);
       })
     );
@@ -84,12 +73,10 @@ export class ClienteService {
   getCliente(id) :Observable<Cliente> {
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNoAutorizado(e)) {
-          return throwError(e);
+        if (e.status != 401 && e.error.mensaje) {
+          this.router.navigate(['/clientes']);
+          console.error(e.error.mensaje);
         }
-        this.router.navigate(['/clientes']);
-        console.error(e.error.mensaje);
-        swal(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
       })
     )
@@ -98,14 +85,12 @@ export class ClienteService {
   update(cliente: Cliente) : Observable<any> {
     return this.http.put<any>(`${this.urlEndPoint}/${cliente.id}`, cliente).pipe(
       catchError(e => {
-        if (this.isNoAutorizado(e)) {
-          return throwError(e);
-        }
         if(e.status==400){
           return throwError(e);
         }
-        console.error(e.error.mensaje)
-        swal(e.error.mensaje, e.error.error, 'error');
+        if (e.error.mensaje) {
+          console.error(e.error.mensaje)
+        } 
         return throwError(e);
       })
     );
@@ -114,11 +99,9 @@ export class ClienteService {
   delete(id: number) : Observable<Cliente> {
     return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNoAutorizado(e)) {
-          return throwError(e);
-        }
-        console.error(e.error.mensaje)
-        swal(e.error.mensaje, e.error.error, 'error');
+        if (e.error.mensaje) {
+          console.error(e.error.mensaje)
+        } 
         return throwError(e);
       })
     );
@@ -133,12 +116,7 @@ export class ClienteService {
       reportProgress: true
     });
 
-    return this.http.request(req).pipe(
-      catchError(e => {
-        this.isNoAutorizado(e);
-        return throwError(e);
-      })
-    );
+    return this.http.request(req)
   }
 
 }
