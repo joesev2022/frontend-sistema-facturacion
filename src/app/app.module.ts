@@ -12,12 +12,13 @@ import { DetalleComponent } from './clientes/detalle/detalle.component';
 import { ClienteService } from './clientes/cliente.service';
 
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './usuarios/login.component';
 import { AuthGuard } from './usuarios/guards/auth.guard';
 import { RoleGuard } from './usuarios/guards/role.guard';
+import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
 
 const routes: Routes = [
   {path: '', redirectTo: '/clientes', pathMatch: 'full'},
@@ -48,6 +49,7 @@ const routes: Routes = [
   ],
   providers: [
     ClienteService,
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
