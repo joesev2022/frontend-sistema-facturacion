@@ -12,7 +12,7 @@ import { Region } from './region';
 export class FormComponent implements OnInit {
 
   titulo:string = "Crear cliente"
-  cliente: Cliente = new Cliente()
+  public cliente: Cliente = new Cliente()
   regiones : Region[];
   errores: string[];
 
